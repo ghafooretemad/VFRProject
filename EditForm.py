@@ -4,9 +4,10 @@ from Encryptor import *
 from UsersList import *
 
 class EditForm(QtWidgets.QWidget):
-    def __init__(self,  ID,  parent=None):
+    def __init__(self,  ID,  userList, parent=None):
         super(EditForm,  self).__init__(parent)
         self.ID = ID
+        self.usersList = userList
         self.parent = parent
         self.setupUi(self)
         self.showData()
@@ -49,6 +50,7 @@ class EditForm(QtWidgets.QWidget):
         QtCore.QMetaObject.connectSlotsByName(Form)
     def closeApp(self):
         self.parent.close()
+        self.usersList.ShowUsers()
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))

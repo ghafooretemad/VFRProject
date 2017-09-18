@@ -104,13 +104,13 @@ class SignUpForm(QtWidgets.QWidget):
                     result = query.exec('insert into Administrators(firstName, lastName, email, password, passwordKey) values("'+ fname +'", "'+ lname +'", "'+ uname +'", "'+ cypherPassword +'", "'+ cypherForgotKey +'")')
                     db.close()
                     if result == True:
-                        QtWidgets.QMessageBox.warning(self, "Sign Up Status", "Successfully Inserted!, wait for Admin to Active your account")
+                        QtWidgets.QMessageBox.information(self, "Sign Up Status", "Successfully Inserted!, wait for Admin to Active your account")
                         self.Clean()
                         return True
                     else:
-                        QtWidgets.QMessageBox.about(self, "Sign Up Status", "An error Occured please try again!" + str(db.lastError()))
+                        QtWidgets.QMessageBox.warning(self, "Sign Up Status", "An error Occured please try again!")
                 else:
-                    QtWidgets.QMessageBox.about(self, "Sign Up Status", "Database Connection fialed")
+                    QtWidgets.QMessageBox.critical(self, "Sign Up Status", "Database Connection fialed")
                     return False
             except:
                 QtWidgets.QMessageBox.critical(self, "Sign Up Status", "An error occured!,please try again")

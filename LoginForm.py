@@ -14,7 +14,6 @@ from ResetLayout import *
 class LoginForm(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.admin = AdministrationWindow(self)
         self.setupUi(self)
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -55,6 +54,7 @@ class LoginForm(QtWidgets.QWidget):
                 while(query.next()):
                     decryptedPassword = AESCipher("GhafoorEtemad").decrypt(eval(query.value("password")))
                     if password == decryptedPassword :
+                        self.admin = AdministrationWindow(self)
                         self.admin.show()
                         self.clear()
                     else:
@@ -75,7 +75,7 @@ class LoginForm(QtWidgets.QWidget):
         self.userName.setPlaceholderText(_translate("Form", "e.g: etemad@example.com"))
         self.password.setPlaceholderText(_translate("Form", "password"))
         self.loginButton.setText(_translate("Form", "Login"))
-        self.forgotPassword.setText(_translate("Form", "forgot password?"))
+        self.forgotPassword.setText(_translate("Form", "Forgot password?"))
         self.userName.setStyleSheet("background-color:#cbd18e")
         self.password.setStyleSheet("background-color:#cbd18e")
         self.loginButton.setStyleSheet("background-color:#b4ba77")

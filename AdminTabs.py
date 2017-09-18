@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QTabWidget, QWidget, QHBoxLayout, QLabel, QFormLayout
+from PyQt5.QtWidgets import QTabWidget, QWidget, QHBoxLayout
 from UsersList import *
 from EmployeeRegistration import *
 class AdminTabs(QWidget):
@@ -28,3 +28,4 @@ class AdminTabs(QWidget):
         employeeTab.layout.addWidget(employeeRegistration)
         employeeTab.setLayout(employeeTab.layout)
         self.tabs.addTab(employeeTab, "Employee")
+   

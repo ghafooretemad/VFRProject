@@ -9,13 +9,15 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from DbConnection import *
-from StartCamera import *
+from EmpCameraLayout import *
 
 class EmployeeRegistration(QtWidgets.QWidget):
     def __init__(self,  parent = None):
         super(EmployeeRegistration,  self).__init__(parent)
+        self.CameraFlag = False
         self.setupUi(self)
     def setupUi(self, Form):
+        
         self.formLayout = QtWidgets.QFormLayout(Form)
         self.formLayout.setFieldGrowthPolicy(QtWidgets.QFormLayout.AllNonFixedFieldsGrow)
         self.formLayout.setObjectName("formLayout")
@@ -47,25 +49,20 @@ class EmployeeRegistration(QtWidgets.QWidget):
         self.label_4 = QtWidgets.QLabel(Form)
         self.label_4.setObjectName("label_4")
         self.formLayout.setWidget(12, QtWidgets.QFormLayout.LabelRole, self.label_4)
-        self.photoButton = QtWidgets.QPushButton(Form)
+        
+        self.startCamera = QtWidgets.QPushButton("Start Camera")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../../Icons/camera-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.photoButton.setIcon(icon)
-        self.photoButton.setObjectName("photoButton")
-        self.photoButton.clicked.connect(self.dataSaver)
-        self.formLayout.setWidget(12, QtWidgets.QFormLayout.FieldRole, self.photoButton)
-        self.saveButton = QtWidgets.QPushButton(Form)
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../../Icons/Save-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.saveButton.setIcon(icon1)
-        self.saveButton.setObjectName("saveButton")
-        self.saveButton.setEnabled(False)
-        self.formLayout.setWidget(14, QtWidgets.QFormLayout.FieldRole, self.saveButton)
+        self.startCamera.setIcon(icon)
+        self.startCamera.setObjectName("startCamera")
+        self.startCamera.clicked.connect(self.dataSaver)
+        self.formLayout.setWidget(12, QtWidgets.QFormLayout.FieldRole, self.startCamera)
         self.normal = QtWidgets.QCheckBox(Form)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("../../Icons/face.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.normal.setIcon(icon2)
         self.normal.setObjectName("normal")
+        self.normal.setChecked(True)
         self.formLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.normal)
         self.excited = QtWidgets.QCheckBox(Form)
         self.excited.setIcon(icon2)
@@ -82,7 +79,6 @@ class EmployeeRegistration(QtWidgets.QWidget):
         self.label_5 = QtWidgets.QLabel(Form)
         self.label_5.setObjectName("label_5")
         self.formLayout.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.label_5)
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -93,8 +89,6 @@ class EmployeeRegistration(QtWidgets.QWidget):
         self.label_2.setText(_translate("Form", "Last Name: "))
         self.label_3.setText(_translate("Form", "Possition: "))
         self.label_4.setText(_translate("Form", "Take Photo: "))
-        self.photoButton.setText(_translate("Form", "Take"))
-        self.saveButton.setText(_translate("Form", "Save"))
         self.normal.setText(_translate("Form", "Normal"))
         self.excited.setText(_translate("Form", "Excited"))
         self.glasses.setText(_translate("Form", "Glasses"))
@@ -103,7 +97,6 @@ class EmployeeRegistration(QtWidgets.QWidget):
     def dataSaver(self):
         flag = True
         self.ApplyStyle()
-
         self.fnameData = self.fname.text().strip()
         self.lnameData = self.lname.text().strip()
         self.possitionData = self.possition.text().strip()
@@ -139,21 +132,29 @@ class EmployeeRegistration(QtWidgets.QWidget):
                         return False
             except:
                 QtWidgets.QMessageBox.critical(self,  "Employee Insertion",  "Database connection field")
-        selectedMode = {} 
+                return False
+        self.selectedMode = {} 
         if (self.normal.isChecked()):
-            selectedMode['normal'] = True
+            self.selectedMode["normal"] = True
         if(self.excited.isChecked()):
-            selectedMode['excited'] = True
+            self.selectedMode["excited"] = True
         if(self.glasses.isChecked()):
-            selectedMode['glasses'] = True
+            self.selectedMode["glasses"] = True
         if(self.laugh.isChecked()):
-            selectedMode['laugh'] = True
-        if(len(selectedMode) <= 0):
+            self.selectedMode["laugh"] = True
+        if(len(self.selectedMode) <= 0):
             flag = False
         if(flag == True):
-            StartCamera(selectedMode,  self.empIDData)
+            EmpCameraLayout(self.selectedMode,  self.empIDData,  self).show()
+            self.clear()
+            
     def ApplyStyle(self):
         self.empID.setStyleSheet("background-color:white")
         self.fname.setStyleSheet("background-color:white")
         self.lname.setStyleSheet("background-color:white")
         self.possition.setStyleSheet("background-color:white")
+    def clear(self):
+        self.empID.setText("")
+        self.fname.setText("")
+        self.lname.setText("")
+        self.possition.setText("")

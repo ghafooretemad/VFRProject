@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QTabWidget, QWidget, QHBoxLayout
 from LoginForm import *
 from SignUpForm import *
+from about import *
 class AllTabs(QWidget):
     def __init__(self, parent):
         super(AllTabs, self).__init__(parent)
@@ -28,7 +29,7 @@ class AllTabs(QWidget):
         self.tabs.addTab(videoProccessing, "Video Proccessing")
     def AdministrationTab(self):
         administration = QWidget()
-
+        administration.setStyleSheet("background-image: url(me.jpg)")
         administration.layout = QHBoxLayout()
         loginForm = LoginForm()
         signUpForm = SignUpForm()
@@ -39,8 +40,7 @@ class AllTabs(QWidget):
     def AboutTab(self):
         aboutTab = QWidget()
         aboutTab.layout = QHBoxLayout()
-
-        sign = SignUpForm()
-        aboutTab.layout.addWidget(sign)
+        about = About()
+        aboutTab.layout.addWidget(about)
         aboutTab.setLayout(aboutTab.layout)
         self.tabs.addTab(aboutTab, "About Us")
